@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: crypto_raw
+    dataset: crypto_raw
+    tables:
+      - name: coins_list_raw
+      - name: market_data_raw
+      - name: historical_prices_raw

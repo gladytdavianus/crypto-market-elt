@@ -1,0 +1,26 @@
+# Credentials - NEVER commit
+credentials/*.json
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+dbt_project/.user.yml
+
+# Airflow
+dags/__pycache__/
+logs/
+airflow.db
+
+# OS
+.DS_Store
