@@ -1,0 +1,56 @@
+name: dbt CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  dbt-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install dependencies
+        run: poetry install --with dev
+
+      - name: Write service account key
+        run: echo "${{ secrets.GCP_SA_KEY_JSON }}" | base64 -d > /tmp/gcp-sa.json
+
+      - name: Set up dbt profile
+        run: |
+          mkdir -p ~/.dbt
+          cat <<EOF > ~/.dbt/profiles.yml
+          crypto_market_elt:
+            target: dev
+            outputs:
+              dev:
+                type: bigquery
+                method: service-account
+                project: ${{ secrets.GCP_PROJECT_ID }}
+                dataset: crypto_raw
+                keyfile: /tmp/gcp-sa.json
+                threads: 4
+                location: US
+          EOF
+
+      - name: Install dbt packages
+        working-directory: dbt_project
+        run: poetry run dbt deps
+
+      - name: dbt parse (validate SQL compiles without needing fresh data)
+        working-directory: dbt_project
+        run: poetry run dbt parse
+
+      - name: dbt test (against existing BigQuery data)
+        working-directory: dbt_project
+        run: poetry run dbt test --select marts

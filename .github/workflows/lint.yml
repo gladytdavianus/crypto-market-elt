@@ -1,0 +1,33 @@
+name: Lint
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install dependencies
+        run: poetry install --with dev
+
+      - name: Run black (check only)
+        run: poetry run black --check extraction dags
+
+      - name: Run isort (check only)
+        run: poetry run isort --check-only extraction dags
+
+      - name: Run ruff
+        run: poetry run ruff check extraction dags
