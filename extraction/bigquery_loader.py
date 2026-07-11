@@ -37,7 +37,7 @@ def load_raw_payload(
         "ingested_at": datetime.now(timezone.utc).isoformat(),
         "coin_id": coin_id,
         "source_endpoint": source_endpoint,
-        "payload": json.dumps(payload, ensure_ascii=False),
+        "payload": payload,
     }
 
     job_config = bigquery.LoadJobConfig(
