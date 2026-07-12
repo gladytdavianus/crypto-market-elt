@@ -21,7 +21,7 @@ jobs:
         run: pip install poetry
 
       - name: Install dependencies
-        run: poetry install --no root --with dev
+        run: poetry install --no-root --with dev
 
       - name: Run black (check only)
         run: poetry run black --check extraction dags

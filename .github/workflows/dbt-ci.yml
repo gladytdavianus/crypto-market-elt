@@ -21,7 +21,7 @@ jobs:
         run: pip install poetry
 
       - name: Install dependencies
-        run: poetry install --no root --with dev
+        run: poetry install --no-root --with dev
 
       - name: Write service account key
         run: echo "${{ secrets.GCP_SA_KEY_JSON }}" | base64 -d > /tmp/gcp-sa.json
