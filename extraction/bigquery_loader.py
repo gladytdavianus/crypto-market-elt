@@ -1,9 +1,7 @@
-import json
 from datetime import datetime, timezone
 
+from config import GCP_DATASET_RAW, GCP_PROJECT_ID
 from google.cloud import bigquery
-
-from config import GCP_PROJECT_ID, GCP_DATASET_RAW
 from logger import setup_logger
 
 logger = setup_logger()

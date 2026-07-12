@@ -1,8 +1,7 @@
+import requests
+from bigquery_loader import load_raw_payload
 from config import COINGECKO_API_KEY, COINGECKO_BASE_URL
 from logger import setup_logger
-from bigquery_loader import load_raw_payload
-
-import requests
 
 logger = setup_logger()
 
